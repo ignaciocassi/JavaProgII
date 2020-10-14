@@ -19,7 +19,6 @@ public class Ejercicios {
 	}
 	
 	public static void ejecutarMostrarPila(PilaTDA p) {
-		metodos m = new metodos();
-		m.mostrarPila(p);
+		metodos.mostrarPila(p);
 	}
 }

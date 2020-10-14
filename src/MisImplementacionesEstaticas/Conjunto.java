@@ -32,7 +32,14 @@ public class Conjunto implements ConjuntoTDA {
 
 	//Precond: El conjunto debe estar inicializado
 	public void sacar(int valor) {
-		
+		int i=0;
+		while(i<indice && arreglo[i]!=valor) {
+			i++;
+		}
+		if (i<indice) {
+			arreglo[i]=arreglo[indice-1];
+			indice--;
+		}
 	}
 
 	//Precond: El conjunto debe estar inicializado
