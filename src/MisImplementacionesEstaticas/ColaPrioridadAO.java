@@ -29,12 +29,12 @@ public class ColaPrioridadAO implements ColaPrioridadTDA {
 	}
 
 	public void Desacolar() {
-		elementos[indice - 1]= null ;
+		elementos[indice-1]= null ;
 		indice --;
 	}
 
 	public int Primero() {
-		return elementos[indice -1]. valor;
+		return elementos[indice-1]. valor;
 	}
 
 	public boolean ColaVacia() {
