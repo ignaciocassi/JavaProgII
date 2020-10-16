@@ -2,9 +2,11 @@ package MisMetodos;
 
 import MisApis.ColaPrioridadTDA;
 import MisApis.ColaTDA;
+import MisApis.ConjuntoTDA;
 import MisApis.PilaTDA;
 import MisImplementacionesEstaticas.ColaPI;
 import MisImplementacionesEstaticas.ColaPrioridad;
+import MisImplementacionesEstaticas.Conjunto;
 import MisImplementacionesEstaticas.Pila;
 
 public class metodos {
@@ -347,4 +349,111 @@ public class metodos {
 		}
 		return iguales;
 	}
+	
+	public static void copiarConjunto(ConjuntoTDA conjOriginal, ConjuntoTDA conjCopia) {
+		ConjuntoTDA conjAux=new Conjunto();
+		conjAux.inicializarConjunto();
+		int valor;
+		while(!conjOriginal.conjuntoVacio()) {
+			valor=conjOriginal.elegir();
+			conjAux.agregar(valor);
+			conjOriginal.sacar(valor);
+		}
+		while(!conjAux.conjuntoVacio()) {
+			valor=conjAux.elegir();
+			conjOriginal.agregar(valor);
+			conjCopia.agregar(valor);
+			conjAux.sacar(valor);
+		}
+	}
+	
+	public static void mostrarConjunto(ConjuntoTDA conj) {
+		System.out.println("Mostrando conjunto: ");
+		ConjuntoTDA conjCopia=new Conjunto();
+		conjCopia.inicializarConjunto();
+		copiarConjunto(conj,conjCopia);
+		int valor;
+		while(!conjCopia.conjuntoVacio()) {
+			valor=conjCopia.elegir();
+			System.out.println(valor);
+			conjCopia.sacar(valor);
+		}
+	}
+	
+	public static ConjuntoTDA unionConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		ConjuntoTDA conjUnion=new Conjunto();
+		ConjuntoTDA conjACopia=new Conjunto();
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		conjBCopia.inicializarConjunto();
+		conjUnion.inicializarConjunto();
+		copiarConjunto(conjA,conjACopia);
+		copiarConjunto(conjB,conjBCopia);
+		
+		int valorA;
+		int valorB;
+		
+		while(!conjACopia.conjuntoVacio() && !conjBCopia.conjuntoVacio()) {
+			valorA=conjACopia.elegir();
+			valorB=conjBCopia.elegir();
+			conjUnion.agregar(valorA);
+			conjUnion.agregar(valorB);
+			conjACopia.sacar(valorA);
+			conjBCopia.sacar(valorB);
+		}
+		return conjUnion;
+	}
+	
+	public static ConjuntoTDA interseccionConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		ConjuntoTDA conjInterseccion=new Conjunto();
+		conjInterseccion.inicializarConjunto();
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
+		metodos.copiarConjunto(conjA,conjACopia);
+		metodos.copiarConjunto(conjB,conjBCopia);
+		
+		int valorA;
+		int valorB;
+		
+		while(!conjACopia.conjuntoVacio() && !conjBCopia.conjuntoVacio()) {
+			valorA=conjACopia.elegir();
+			valorB=conjBCopia.elegir();
+			if (conjBCopia.pertenece(valorA)) {
+				conjInterseccion.agregar(valorA);
+			}
+			if (conjACopia.pertenece(valorB)) {
+				conjInterseccion.agregar(valorB);
+			}
+			conjACopia.sacar(valorA);
+			conjBCopia.sacar(valorB);
+		}
+		return conjInterseccion;
+	}
+	
+	public static ConjuntoTDA diferenciaConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		ConjuntoTDA conjDiferencia=new Conjunto();
+		ConjuntoTDA conjUnion=new Conjunto();
+		ConjuntoTDA conjInterseccion=new Conjunto();
+		conjDiferencia.inicializarConjunto();
+		conjUnion.inicializarConjunto();
+		conjInterseccion.inicializarConjunto();
+		
+		conjUnion=unionConjuntos(conjA,conjB);
+		conjInterseccion=interseccionConjuntos(conjA,conjB);
+		int valorU;
+		while(!conjUnion.conjuntoVacio()) {
+			valorU=conjUnion.elegir();
+			if (!conjInterseccion.pertenece(valorU)) {
+				conjDiferencia.agregar(valorU);
+			}
+			conjUnion.sacar(valorU);
+		}
+		return conjDiferencia;
+		
+	}
+	
 }
+	

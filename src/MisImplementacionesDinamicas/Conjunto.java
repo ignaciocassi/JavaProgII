@@ -3,6 +3,7 @@ package MisImplementacionesDinamicas;
 import MisApis.ConjuntoTDA;
 
 public class Conjunto implements ConjuntoTDA {
+	//Tamaño máximo no acotado
 	
 	Nodo c;
 
