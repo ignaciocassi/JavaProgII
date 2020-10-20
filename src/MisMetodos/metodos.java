@@ -3,7 +3,9 @@ package MisMetodos;
 import MisApis.ColaPrioridadTDA;
 import MisApis.ColaTDA;
 import MisApis.ConjuntoTDA;
+import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
+import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesEstaticas.ColaPI;
 import MisImplementacionesEstaticas.ColaPrioridad;
 import MisImplementacionesEstaticas.Conjunto;
@@ -46,7 +48,7 @@ public class metodos {
 	}
 	
 	//2b. Copia una pila Original a una pila Copia, no destructivo, en el mismo orden que la original
-	public static PilaTDA copiarPila(PilaTDA pilaOriginal, PilaTDA pilaCopia) {
+	public static void copiarPila(PilaTDA pilaOriginal, PilaTDA pilaCopia) {
 		PilaTDA pilaAux=new Pila();
 		pilaAux.InicializarPila();
 		int tope;
@@ -61,24 +63,25 @@ public class metodos {
 			pilaCopia.Apilar(tope);
 			pilaAux.Desapilar();
 		}
-		return pilaCopia;
 	}
 	
 	//2c. Invierte una pila, mediante una pila auxiliar
-	public static void invertirPila(PilaTDA pila) {
-		PilaTDA pilaAux=new Pila();
-		pilaAux.InicializarPila();
+	public static PilaTDA invertirPila(PilaTDA pila) {
+		PilaTDA pilaInvertida=new Pila();
+		pilaInvertida.InicializarPila();
+		
+		PilaTDA pilaCopia = new Pila();
+		pilaCopia.InicializarPila();
+		
+		copiarPila(pila,pilaCopia);
+		
 		int tope;
-		while (!pila.PilaVacia()) {
-			tope=pila.Tope();
-			pilaAux.Apilar(tope);
-			pila.Desapilar();
+		while (!pilaCopia.PilaVacia()) {
+			tope=pilaCopia.Tope();
+			pilaInvertida.Apilar(tope);
+			pilaCopia.Desapilar();
 		}
-		while (!pilaAux.PilaVacia()) {
-			tope=pilaAux.Tope();
-			pila.Apilar(tope);
-			pilaAux.Desapilar();
-		}
+		return pilaInvertida;
 	}
 	
 	//2d. Cuenta los elementos de una pila, no destructiva
@@ -453,6 +456,129 @@ public class metodos {
 		}
 		return conjDiferencia;
 		
+	}
+	
+	//TP3.1a 
+	public static boolean pilaCapicua(PilaTDA P) {
+		boolean capicua=true;
+		
+		PilaTDA Pcopia=new Pila();
+		Pcopia.InicializarPila();
+		
+		PilaTDA PcopiaInvertida=new Pila();
+		PcopiaInvertida.InicializarPila();
+		
+		copiarPila(P,Pcopia);
+		copiarPila(Pcopia,PcopiaInvertida);
+		PcopiaInvertida=invertirPila(Pcopia);
+		
+		while(!Pcopia.PilaVacia() && !PcopiaInvertida.PilaVacia() && capicua==true) {
+			if (Pcopia.Tope()!=PcopiaInvertida.Tope()) {
+				capicua=false;
+			}
+			Pcopia.Desapilar();
+			PcopiaInvertida.Desapilar();
+		}
+		return capicua;
+	}
+	
+	//TP3.1b
+	public static void eliminarRepetidosPila(PilaTDA P) {
+		PilaTDA Paux=new Pila();
+		Paux.InicializarPila();
+		ConjuntoTDA insertados=new Conjunto();
+		insertados.inicializarConjunto();
+		int tope;
+		while(!P.PilaVacia()) {
+			tope=P.Tope();
+			Paux.Apilar(tope);
+			P.Desapilar();
+		}
+		while(!Paux.PilaVacia()) {
+			tope=Paux.Tope();
+			if(!insertados.pertenece(tope)) {
+				P.Apilar(tope);
+				insertados.agregar(tope);
+			}
+			Paux.Desapilar();
+		}
+	}
+	
+	//TP3.1c
+	public static void partirPilaEnDos(PilaTDA P, PilaTDA M1, PilaTDA M2) {
+		PilaTDA pilaAux=new Pila();
+		pilaAux.InicializarPila();
+		int elementos=0;
+		int contador=0;
+		int tope;
+		
+		while(!P.PilaVacia()) {
+			tope=P.Tope();
+			pilaAux.Apilar(tope);
+			elementos++;
+			P.Desapilar();
+		}
+		while(!pilaAux.PilaVacia()) {
+			tope=pilaAux.Tope();
+			if(contador<elementos/2) {
+				M1.Apilar(tope);
+			} else {
+				M2.Apilar(tope);
+			}
+			P.Apilar(tope);
+			contador++;
+			pilaAux.Desapilar();
+		}
+		
+	}
+	
+	//TP3.1d
+	public static ConjuntoTDA obtenerRepetidosPila(PilaTDA P) {
+		
+		ConjuntoTDA repetidos=new Conjunto();
+		repetidos.inicializarConjunto();
+		
+		PilaTDA pilaAux=new Pila();
+		pilaAux.InicializarPila();
+		
+		PilaTDA PCopia=new Pila();
+		PCopia.InicializarPila();
+		
+		DiccSimpleTDA apariciones=new DiccSimple();
+		apariciones.inicializarDiccionario();
+		
+		ConjuntoTDA valores=new Conjunto();
+		valores.inicializarConjunto();
+		
+		metodos.copiarPila(P, PCopia);
+
+		int tope;
+		int veces;
+		int elemento;
+		
+		while(!PCopia.PilaVacia()) {
+			tope=PCopia.Tope();
+			valores=apariciones.claves();
+			if(!valores.pertenece(tope)) {
+				apariciones.agregar(tope, 1);
+			} else {
+				veces=apariciones.recuperar(tope);
+				apariciones.agregar(tope, veces+1);
+			}
+			PCopia.Desapilar();
+		}
+		
+		valores=apariciones.claves();
+		while(!valores.conjuntoVacio()) {
+			elemento=valores.elegir();
+			veces=apariciones.recuperar(elemento);
+			if(veces>1) {
+				repetidos.agregar(elemento);
+			}
+			apariciones.eliminar(elemento);
+			valores=apariciones.claves();
+		}
+		return repetidos;
 	}
 	
 }

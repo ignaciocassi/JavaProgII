@@ -20,13 +20,11 @@ public class DiccSimple implements DiccSimpleTDA {
 	public void agregar(int clave, int valor) {
 		NodoClave nodoActual=Clave2NodoClave(clave);             //Busca el nodo con la clave
 		if (nodoActual==null) {                                  //si no lo encontró, lo crea
-			NodoClave nuevoNodo=new NodoClave();
-			nuevoNodo.clave=clave;
-			nuevoNodo.valor=valor;
-			origen=nuevoNodo;                                     //Origen pasa a ser el nuevoNodo
+			nodoActual=new NodoClave();
+			nodoActual.clave=clave;
+			origen=nodoActual;                                     //Origen pasa a ser el nuevoNodo
 		}
 		nodoActual.valor=valor;                                   //Si existe la clave en un nodo, reemplaza su valor por el nuevo
-		
 	}
 
 	private NodoClave Clave2NodoClave(int clave) {                //Recibe una clave, busca el nodo que contenga la clave, si la encuentra la devuelve, sino devuelve null
@@ -66,7 +64,7 @@ public class DiccSimple implements DiccSimpleTDA {
 			claves.agregar(nodoAux.clave);
 			nodoAux=nodoAux.sigNodo;
 		}
-		return null;
+		return claves;
 	}
 
 }

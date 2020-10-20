@@ -16,7 +16,6 @@ public class ConjuntoUA implements ConjuntoTDA {
 		primerNodo=null;
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Ingrese el máximo para el Conj universo acotado: ");
-		int N=sc.nextInt();
 		sc.close();
 	}
 
