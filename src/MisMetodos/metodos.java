@@ -5,6 +5,7 @@ import MisApis.ColaTDA;
 import MisApis.ConjuntoTDA;
 import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
+import MisImplementacionesDinamicas.Cola;
 import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesEstaticas.ColaPI;
 import MisImplementacionesEstaticas.ColaPrioridad;
@@ -534,52 +535,256 @@ public class metodos {
 	
 	//TP3.1d
 	public static ConjuntoTDA obtenerRepetidosPila(PilaTDA P) {
+		ConjuntoTDA cAgregados=new Conjunto();
+		cAgregados.inicializarConjunto();
 		
-		ConjuntoTDA repetidos=new Conjunto();
-		repetidos.inicializarConjunto();
+		ConjuntoTDA cRepetidos=new Conjunto();
+		cRepetidos.inicializarConjunto();
 		
-		PilaTDA pilaAux=new Pila();
-		pilaAux.InicializarPila();
+		PilaTDA pCopia=new Pila();
+		pCopia.InicializarPila();
 		
-		PilaTDA PCopia=new Pila();
-		PCopia.InicializarPila();
+		metodos.copiarPila(P, pCopia);
 		
-		DiccSimpleTDA apariciones=new DiccSimple();
-		apariciones.inicializarDiccionario();
-		
-		ConjuntoTDA valores=new Conjunto();
-		valores.inicializarConjunto();
-		
-		metodos.copiarPila(P, PCopia);
-
 		int tope;
-		int veces;
-		int elemento;
-		
-		while(!PCopia.PilaVacia()) {
-			tope=PCopia.Tope();
-			valores=apariciones.claves();
-			if(!valores.pertenece(tope)) {
-				apariciones.agregar(tope, 1);
-			} else {
-				veces=apariciones.recuperar(tope);
-				apariciones.agregar(tope, veces+1);
+		while(!pCopia.PilaVacia()) {
+			tope=pCopia.Tope();
+			if(!cAgregados.pertenece(tope)) {
+				cAgregados.agregar(tope);
+			} else if (cAgregados.pertenece(tope)){
+				cRepetidos.agregar(tope);
 			}
-			PCopia.Desapilar();
+			pCopia.Desapilar();
 		}
-		
-		valores=apariciones.claves();
-		while(!valores.conjuntoVacio()) {
-			elemento=valores.elegir();
-			veces=apariciones.recuperar(elemento);
-			if(veces>1) {
-				repetidos.agregar(elemento);
-			}
-			apariciones.eliminar(elemento);
-			valores=apariciones.claves();
-		}
-		return repetidos;
+		return cRepetidos;
 	}
-	
+
+	//TP3.2a
+	public static void sacarRepetidosCola(ColaTDA c) {
+		ConjuntoTDA cAgregados=new Conjunto();
+		cAgregados.inicializarConjunto();
+		
+		ColaTDA colaAux=new Cola();
+		colaAux.InicializarCola();
+		
+		int primero;
+		while(!c.ColaVacia()) {
+			primero=c.Primero();
+			if (!cAgregados.pertenece(primero)) {
+				cAgregados.agregar(primero);
+				colaAux.Acolar(primero);
+				c.Desacolar();
+			} else if(cAgregados.pertenece(primero)) {
+				c.Desacolar();
+			}
+		}
+		while(!colaAux.ColaVacia()) {
+			primero=colaAux.Primero();
+			c.Acolar(primero);
+			colaAux.Desacolar();
+		}
+	}
+
+	public static void partirColaEnDos(ColaTDA c, ColaTDA m1, ColaTDA m2) {
+		ColaTDA colaAux=new Cola();
+		colaAux.InicializarCola();
+		
+		int primero;
+		int cantidad=0;
+		int contador=0;
+		while(!c.ColaVacia()) {
+			primero=c.Primero();
+			colaAux.Acolar(primero);
+			cantidad++;
+			c.Desacolar();
+		}
+		while(!colaAux.ColaVacia()) {
+			primero=colaAux.Primero();
+			if (contador<(cantidad/2)) {
+				m1.Acolar(primero);
+			} else if (contador>=(cantidad/2)){
+				m2.Acolar(primero);
+			}
+			contador++;
+			colaAux.Desacolar();
+		}
+	}
+
+	public static ConjuntoTDA obtenerRepetidosCola(ColaTDA c) {
+		ColaTDA cCopia=new Cola();
+		cCopia.InicializarCola();
+		
+		ConjuntoTDA conjAgregados=new Conjunto();
+		conjAgregados.inicializarConjunto();
+		
+		ConjuntoTDA conjRepetidos=new Conjunto();
+		conjRepetidos.inicializarConjunto();
+		
+		metodos.copiarCola(c, cCopia);
+		
+		int primero;
+		while(!cCopia.ColaVacia()) {
+			primero=cCopia.Primero();
+			if(!conjAgregados.pertenece(primero)) {
+				conjAgregados.agregar(primero);
+			} else if (conjAgregados.pertenece(primero)) {
+				cCopia.Desacolar();
+				conjRepetidos.agregar(primero);
+			}
+			cCopia.Desacolar();
+		}
+		return conjRepetidos;
+	}
+
+	public static ConjuntoTDA obtenerDifSimetricaEntreConj(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
+		ConjuntoTDA conjUnion=new Conjunto();
+		conjUnion.inicializarConjunto();
+		
+		ConjuntoTDA conjInterseccion=new Conjunto();
+		conjInterseccion.inicializarConjunto();
+		
+		ConjuntoTDA conjDifSim=new Conjunto();
+		conjDifSim.inicializarConjunto();
+		
+		metodos.copiarConjunto(conjA, conjACopia);
+		metodos.copiarConjunto(conjB, conjBCopia);
+		
+		int elemento;
+		while(!conjACopia.conjuntoVacio()) {
+			elemento=conjACopia.elegir();
+			conjUnion.agregar(elemento);
+			conjACopia.sacar(elemento);
+		}
+		while(!conjBCopia.conjuntoVacio()) {
+			elemento=conjBCopia.elegir();
+			conjUnion.agregar(elemento);
+			conjBCopia.sacar(elemento);
+		}
+		
+		metodos.copiarConjunto(conjA, conjACopia);
+		metodos.copiarConjunto(conjB, conjBCopia);
+		
+		while(!conjACopia.conjuntoVacio() && !conjBCopia.conjuntoVacio()) {
+			elemento=conjACopia.elegir();
+			if(conjBCopia.pertenece(elemento)) {
+				conjInterseccion.agregar(elemento);
+			}
+			conjACopia.sacar(elemento);
+			elemento=conjBCopia.elegir();
+			if(conjACopia.pertenece(elemento)) {
+				conjInterseccion.agregar(elemento);
+			}
+			conjBCopia.sacar(elemento);
+		}
+		
+		while(!conjUnion.conjuntoVacio()) {
+			elemento=conjUnion.elegir();
+			if(!conjInterseccion.pertenece(elemento)) {
+				conjDifSim.agregar(elemento);
+			}
+			conjUnion.sacar(elemento);
+		}
+		return conjDifSim;
+	}
+
+	public static boolean conjuntosIguales(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
+		copiarConjunto(conjA,conjACopia);
+		copiarConjunto(conjB,conjBCopia);
+		
+		boolean iguales=true;
+		int elemento;
+		while(!conjACopia.conjuntoVacio() && !conjBCopia.conjuntoVacio() && iguales==true) {
+			elemento=conjACopia.elegir();
+			if(!conjBCopia.pertenece(elemento)) {
+				iguales=false;
+			} else {
+				conjACopia.sacar(elemento);
+				conjBCopia.sacar(elemento);
+			}
+		}
+		if(conjACopia.conjuntoVacio() && conjBCopia.conjuntoVacio()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static int cantidadElemConjunto(ConjuntoTDA c) {
+		ConjuntoTDA cCopia=new Conjunto();
+		cCopia.inicializarConjunto();
+		copiarConjunto(c,cCopia);
+		int contador=0;
+		
+		while(!cCopia.conjuntoVacio()) {
+			cCopia.sacar(cCopia.elegir());
+			contador++;
+		}
+		
+		return contador;
+	}
+
+	public static ConjuntoTDA obtenerConjElementosComunesEntrePilayCola(PilaTDA p, ColaTDA c) {
+		PilaTDA pCopia=new Pila();
+		pCopia.InicializarPila();
+		
+		ColaTDA cCopia=new Cola();
+		cCopia.InicializarCola();
+		
+		ConjuntoTDA elemPila=new Conjunto();
+		elemPila.inicializarConjunto();
+		
+		ConjuntoTDA elemCola=new Conjunto();
+		elemCola.inicializarConjunto();
+		
+		ConjuntoTDA elemComunes=new Conjunto();
+		elemComunes.inicializarConjunto();
+		
+		copiarPila(p,pCopia);
+		copiarCola(c,cCopia);
+		
+		int elemento;
+		while(!pCopia.PilaVacia()) {
+			elemento=pCopia.Tope();
+			elemPila.agregar(elemento);
+			pCopia.Desapilar();
+		}
+		while(!cCopia.ColaVacia()) {
+			elemento=cCopia.Primero();
+			elemCola.agregar(elemento);
+			cCopia.Desacolar();
+		}
+		
+		while(!elemPila.conjuntoVacio() && !elemCola.conjuntoVacio()) {
+			elemento=elemPila.elegir();
+			if (!elemCola.pertenece(elemento)) {
+				elemPila.sacar(elemento);
+			} else {
+				elemComunes.agregar(elemento);
+				elemPila.sacar(elemento);
+				elemCola.sacar(elemento);
+			}
+			elemento=elemCola.elegir();
+			if (!elemPila.pertenece(elemento)) {
+				elemCola.sacar(elemento);
+			} else {
+				elemComunes.agregar(elemento);
+				elemCola.sacar(elemento);
+				elemPila.sacar(elemento);
+			}
+		}
+		return elemComunes;
+	}
 }
 	
