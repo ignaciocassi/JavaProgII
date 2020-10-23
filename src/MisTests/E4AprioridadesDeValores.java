@@ -6,6 +6,7 @@ import MisApis.DiccMultipleTDA;
 import MisImplementacionesDinamicas.ColaPrioridad;
 import MisImplementacionesDinamicas.Conjunto;
 import MisImplementacionesDinamicas.DiccMultiple;
+import MisMetodos.metodos;
 
 public class E4AprioridadesDeValores {
 
@@ -24,8 +25,11 @@ public class E4AprioridadesDeValores {
 		C.Acolar(3, 2);
 		C.Acolar(3, 3);
 		
-		DiccMultipleTDA listaDePrioridades=prioridadesDeCadaValor(C);
+		System.out.println("ColaPrioridad: ");
+		metodos.mostrarColaPrioridad(C);
 		
+		DiccMultipleTDA listaDePrioridades=prioridadesDeCadaValor(C);
+		System.out.println("DiccMultiple lista de prioridades de valores: ");
 		mostrarDiccMultiple(listaDePrioridades);
 		
 	}

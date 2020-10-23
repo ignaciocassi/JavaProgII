@@ -1,11 +1,14 @@
 package MisMetodos;
 
+import MisApis.ABBTDA;
 import MisApis.ColaPrioridadTDA;
 import MisApis.ColaTDA;
 import MisApis.ConjuntoTDA;
+import MisApis.DiccMultipleTDA;
 import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
 import MisImplementacionesDinamicas.Cola;
+import MisImplementacionesDinamicas.DiccMultiple;
 import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesEstaticas.ColaPI;
 import MisImplementacionesEstaticas.ColaPrioridad;
@@ -132,6 +135,15 @@ public class metodos {
 			colaDestino.Acolar(primero);
 		};
 	}
+	 //4c. Invierte una colaOrigen mediante recursividad
+	public static void invertirColaRecursividad(ColaTDA colaOrigen) {
+		if (!colaOrigen.ColaVacia()) {
+			int primero = colaOrigen.Primero();
+	        colaOrigen.Desacolar();
+	        invertirColaRecursividad(colaOrigen);
+	       colaOrigen.Acolar(primero);
+	     }
+	}
 	
 	//4b. Invierte una colaOrigen pasandola a una pilaAux y luego vuelve a pasarla a la colaOrigen
 	public static void invertirColaConAux(ColaTDA colaOrigen) {
@@ -188,19 +200,44 @@ public class metodos {
 		}
 	}
 	
-	//4c. Invierte una cola sin una pila axiliar
-	public static void invertirColaSinAux(ColaTDA colaOrigen) {
-		//IMPLEMENTAR
+	public static boolean colaCapicua(ColaTDA cola) {
+		ColaTDA colaAux=new Cola();
+		colaAux.InicializarCola();
 		
+		int cant=0;
 		
+		PilaTDA pila=new Pila();
+		pila.InicializarPila();
 		
+		while(!cola.ColaVacia()) {
+			pila.Apilar(cola.Primero());
+			cant++;
+			cola.Desacolar();
+		}
 		
+		int mitad=cant/2;
 		
+		while(!colaAux.ColaVacia() && mitad>0) {
+			pila.Apilar(colaAux.Primero());
+			colaAux.Desacolar();
+			mitad--;
+		}
 		
+		if((cant%2)!=0) {
+			colaAux.Desacolar();
+		}
 		
+		while(!pila.PilaVacia() && !colaAux.ColaVacia()) {
+			if (pila.Tope()!=colaAux.Primero()) {
+				return false;
+			}
+			pila.Desapilar();
+			colaAux.Desacolar();
+		}
+		return (pila.PilaVacia() && colaAux.ColaVacia());
 	}
 	
-	//4e. Determinar si una cola es capicúa o no.
+	/**4e. Determinar si una cola es capicúa o no.
 	public static boolean colaCapicua(ColaTDA colaOrigen) {
 		boolean capicua=false;
 		int cantidad=0;
@@ -237,6 +274,7 @@ public class metodos {
 		}
 		return capicua;
 	}
+	**/
 	
 	//4d. Determinar si el final de la Cola C1 coincide o no con la Cola C2.
 	public static boolean finalColasCoinciden(ColaTDA cola1, ColaTDA cola2) {
@@ -295,15 +333,25 @@ public class metodos {
 	
 	//6a. Combina dos colas con prioridad colaP1 y colaP2, y devuelve una nueva.
 	public static ColaPrioridadTDA combinarColasPrioridad(ColaPrioridadTDA colaP1, ColaPrioridadTDA colaP2) {
+		ColaPrioridadTDA colaP1Copia=new ColaPrioridad();
+		colaP1Copia.InicializarCola();
+		
+		ColaPrioridadTDA colaP2Copia=new ColaPrioridad();
+		colaP2Copia.InicializarCola();
+		
 		ColaPrioridadTDA nuevaColaP=new ColaPrioridad();
 		nuevaColaP.InicializarCola();
-		while (!colaP1.ColaVacia()) {
-			nuevaColaP.Acolar(colaP1.Primero(), colaP1.Prioridad());
-			colaP1.Desacolar();
+		
+		metodos.copiarColaPrioridad(colaP1, colaP1Copia);
+		metodos.copiarColaPrioridad(colaP2, colaP2Copia);
+		
+		while (!colaP1Copia.ColaVacia()) {
+			nuevaColaP.Acolar(colaP1Copia.Primero(), colaP1Copia.Prioridad());
+			colaP1Copia.Desacolar();
 		}
-		while (!colaP2.ColaVacia()) {
-			nuevaColaP.Acolar(colaP2.Primero(), colaP2.Prioridad());
-			colaP2.Desacolar();
+		while (!colaP2Copia.ColaVacia()) {
+			nuevaColaP.Acolar(colaP2Copia.Primero(), colaP2Copia.Prioridad());
+			colaP2Copia.Desacolar();
 		}
 		return nuevaColaP;
 	}
@@ -369,6 +417,28 @@ public class metodos {
 			conjCopia.agregar(valor);
 			conjAux.sacar(valor);
 		}
+	}
+	
+	public static DiccMultipleTDA prioridadesDeCadaValor(ColaPrioridadTDA C) {
+		
+		DiccMultipleTDA listaDePrioridades=new DiccMultiple();
+		listaDePrioridades.inicializarDiccionario();
+		
+		ColaPrioridadTDA colaCopia=new ColaPrioridad();
+		colaCopia.InicializarCola();
+		
+		copiarColaPrioridad(C,colaCopia);
+		
+		int elemento;
+		int prioridad;
+		
+		while(!colaCopia.ColaVacia()) {
+			elemento=colaCopia.Primero();
+			prioridad=colaCopia.Prioridad();
+			listaDePrioridades.agregar(elemento, prioridad);
+			colaCopia.Desacolar();
+		}
+		return listaDePrioridades;
 	}
 	
 	public static void mostrarConjunto(ConjuntoTDA conj) {
@@ -487,8 +557,10 @@ public class metodos {
 	public static void eliminarRepetidosPila(PilaTDA P) {
 		PilaTDA Paux=new Pila();
 		Paux.InicializarPila();
+		
 		ConjuntoTDA insertados=new Conjunto();
 		insertados.inicializarConjunto();
+		
 		int tope;
 		while(!P.PilaVacia()) {
 			tope=P.Tope();
@@ -786,5 +858,339 @@ public class metodos {
 		}
 		return elemComunes;
 	}
+
+	public static ConjuntoTDA obtenerConjClavesComunesEntreDM(DiccMultipleTDA d1, DiccMultipleTDA d2) {
+		//Obtiene las claves comunes entre D1 y D2
+		ConjuntoTDA clavesD1=new Conjunto();
+		clavesD1.inicializarConjunto();
+		
+		ConjuntoTDA clavesD2=new Conjunto();
+		clavesD2.inicializarConjunto();
+		
+		ConjuntoTDA clavesComunes=new Conjunto();
+		clavesComunes.inicializarConjunto();
+		
+		clavesD1=d1.claves();
+		clavesD2=d2.claves();
+		
+		int clave;
+		while(!clavesD1.conjuntoVacio() && !clavesD2.conjuntoVacio()) {
+			clave=clavesD1.elegir();
+			if(clavesD2.pertenece(clave)) {
+				clavesComunes.agregar(clave);
+			}
+			clavesD1.sacar(clave);
+			clavesD2.sacar(clave);
+		}
+		return clavesComunes;
+	}
+
+	public static DiccMultipleTDA obtenerClavesyValoresComunes(DiccMultipleTDA d1, DiccMultipleTDA d2, ConjuntoTDA clavesComunes) {
+		//Obtiene las claves comunes entre D1 y D2, con todos los valores que aparecen en dichas claves
+		ConjuntoTDA conjValoresD1=new Conjunto();
+		conjValoresD1.inicializarConjunto();
+		
+		ConjuntoTDA conjValoresD2=new Conjunto();
+		conjValoresD2.inicializarConjunto();
+		
+		DiccMultipleTDA clavesYValoresComunes=new DiccMultiple();
+		clavesYValoresComunes.inicializarDiccionario();
+		
+		int clave;
+		int valorD1;
+		int valorD2;
+		while(!clavesComunes.conjuntoVacio()) {
+			clave=clavesComunes.elegir();
+			conjValoresD1=d1.recuperar(clave);
+			conjValoresD2=d2.recuperar(clave);
+			while(!conjValoresD1.conjuntoVacio() && !conjValoresD2.conjuntoVacio()) {
+				valorD1=conjValoresD1.elegir();
+				clavesYValoresComunes.agregar(clave, valorD1);
+				valorD2=conjValoresD2.elegir();
+				clavesYValoresComunes.agregar(clave, valorD2);
+				conjValoresD1.sacar(valorD1);
+				conjValoresD2.sacar(valorD2);
+			}
+			clavesComunes.sacar(clave);
+		}
+		return clavesYValoresComunes;
+	}
+
+	public static void mostrarDiccMultiple(DiccMultipleTDA dicc) {
+		DiccMultipleTDA diccCopia=new DiccMultiple();
+		diccCopia.inicializarDiccionario();
+		
+		ConjuntoTDA claves=new Conjunto();
+		claves.inicializarConjunto();
+		
+		ConjuntoTDA valores=new Conjunto();
+		valores.inicializarConjunto();
+		
+		copiarDiccMultiple(dicc,diccCopia);
+		
+		System.out.println("Mostrando DiccMultiple: ");
+		
+		int clave;
+		int valor;
+		claves=diccCopia.claves();
+		while(!claves.conjuntoVacio()) {
+			clave=claves.elegir();
+			valores=diccCopia.recuperar(clave);
+			while(!valores.conjuntoVacio()) {
+				valor=valores.elegir();
+				System.out.println("Clave: "+clave+" Valor: "+valor+".");
+				valores.sacar(valor);
+			}
+			claves.sacar(clave);
+		}
+		
+	}
+
+	private static void copiarDiccMultiple(DiccMultipleTDA diccOriginal, DiccMultipleTDA diccCopia) {
+		DiccMultipleTDA diccAux=new DiccMultiple();
+		diccAux.inicializarDiccionario();
+		
+		ConjuntoTDA claves=new Conjunto();
+		claves.inicializarConjunto();
+		
+		ConjuntoTDA valores=new Conjunto();
+		valores.inicializarConjunto();
+		
+		
+		int clave;
+		int valor;
+		claves=diccOriginal.claves();
+		while(!claves.conjuntoVacio()) {
+			clave=claves.elegir();
+			valores=diccOriginal.recuperar(clave);
+			while(!valores.conjuntoVacio()) {
+				valor=valores.elegir();
+				diccCopia.agregar(clave, valor);
+				valores.sacar(valor);
+			}
+			claves.sacar(clave);
+		}
+		claves=diccAux.claves();
+		while(!claves.conjuntoVacio()) {
+			clave=claves.elegir();
+			valores=diccAux.recuperar(clave);
+			while(!valores.conjuntoVacio()) {
+				valor=valores.elegir();
+				diccOriginal.agregar(clave, valor);
+				diccCopia.agregar(clave, valor);
+				valores.sacar(valor);
+			}
+			claves.sacar(clave);
+		}
+	}
+
+	public static DiccMultipleTDA obtenerDiccSumaD1D2(DiccMultipleTDA D1, DiccMultipleTDA D2) {
+		DiccMultipleTDA D1Copia=new DiccMultiple();
+		D1Copia.inicializarDiccionario();
+		
+		DiccMultipleTDA D2Copia=new DiccMultiple();
+		D2Copia.inicializarDiccionario();
+		
+		DiccMultipleTDA diccSuma=new DiccMultiple();
+		diccSuma.inicializarDiccionario();
+		
+		ConjuntoTDA conjClavesD1=new Conjunto();
+		conjClavesD1.inicializarConjunto();
+		
+		ConjuntoTDA conjValoresD1=new Conjunto();
+		conjValoresD1.inicializarConjunto();
+		
+		ConjuntoTDA conjClavesD2=new Conjunto();
+		conjClavesD2.inicializarConjunto();
+		
+		ConjuntoTDA conjValoresD2=new Conjunto();
+		conjValoresD2.inicializarConjunto();
+		
+		
+		copiarDiccMultiple(D1,D1Copia);
+		copiarDiccMultiple(D2,D2Copia);
+		
+		int clave;
+		int valor;
+		conjClavesD1=D1Copia.claves();
+		while(!conjClavesD1.conjuntoVacio()) {
+			clave=conjClavesD1.elegir();
+			conjValoresD1=D1.recuperar(clave);
+			while(!conjValoresD1.conjuntoVacio()) {
+				valor=conjValoresD1.elegir();
+				diccSuma.agregar(clave, valor);
+				conjValoresD1.sacar(valor);
+			}
+			conjClavesD1.sacar(clave);
+		}
+		conjClavesD2=D2Copia.claves();
+		while(!conjClavesD2.conjuntoVacio()) {
+			clave=conjClavesD2.elegir();
+			conjValoresD2=D2.recuperar(clave);
+			while(!conjValoresD2.conjuntoVacio()) {
+				valor=conjValoresD2.elegir();
+				diccSuma.agregar(clave, valor);
+				conjValoresD2.sacar(valor);
+			}
+			conjClavesD2.sacar(clave);
+		}
+		return diccSuma;
+	}
+
+	public static DiccMultipleTDA obtenerDiccSumaClavesComunesD1D2(DiccMultipleTDA D1, DiccMultipleTDA D2, ConjuntoTDA clavesComunes) {
+		
+		DiccMultipleTDA D1Copia=new DiccMultiple();
+		DiccMultipleTDA D2Copia=new DiccMultiple();
+		DiccMultipleTDA diccSuma=new DiccMultiple();
+		diccSuma.inicializarDiccionario();
+		D1Copia.inicializarDiccionario();
+		D2Copia.inicializarDiccionario();
+		
+		ConjuntoTDA valoresD1=new Conjunto();
+		valoresD1.inicializarConjunto();
+		
+		ConjuntoTDA valoresD2=new Conjunto();
+		valoresD2.inicializarConjunto();
+		
+		metodos.copiarDiccMultiple(D1, D1Copia);
+		metodos.copiarDiccMultiple(D2, D2Copia);
+		
+		int clave;
+		int valorD1;
+		int valorD2;
+		while(!clavesComunes.conjuntoVacio()) {
+			clave=clavesComunes.elegir();
+			valoresD1=D1Copia.recuperar(clave);
+			valoresD2=D2Copia.recuperar(clave);
+			while(!valoresD1.conjuntoVacio() && !valoresD2.conjuntoVacio()) {
+				valorD1=valoresD1.elegir();
+				valorD2=valoresD2.elegir();
+				if (valoresD2.pertenece(valorD1)) {
+					diccSuma.agregar(clave, valorD1);
+					valoresD1.sacar(valorD1);
+				} else if(valoresD1.pertenece(valorD2)) {
+					diccSuma.agregar(clave, valorD2);
+					valoresD2.sacar(valorD2);
+				} else {
+					valoresD1.sacar(valorD1);
+					valoresD2.sacar(valorD2);
+				}
+
+			}
+			clavesComunes.sacar(clave);
+			
+		}
+		return diccSuma;
+	}
+	public static void sumarDiccionariosMultiples(DiccMultipleTDA D1,DiccMultipleTDA D12) {
+		ConjuntoTDA clavesD1=new Conjunto();
+		clavesD1.inicializarConjunto();
+	}
+
+	public static ConjuntoTDA obtenerDifSimetricaEntreConjSinUID(ConjuntoTDA conjA, ConjuntoTDA conjB) {
+		//Todos los que no estan repetidos
+		
+		ConjuntoTDA difSim=new Conjunto();
+		difSim.inicializarConjunto();
+		
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
+		copiarConjunto(conjA,conjACopia);
+		copiarConjunto(conjB,conjBCopia);
+		
+		int elemento;
+		while(!conjACopia.conjuntoVacio()) {
+			elemento=conjACopia.elegir();                 //Tomo elemento de A
+			if(!conjBCopia.pertenece(elemento)) {         //Si no pertenece a B, lo agrego
+				difSim.agregar(elemento);
+			} else {                                      //Si pertenece a B, lo saco de ambos
+				conjBCopia.sacar(elemento);
+			}
+			conjACopia.sacar(elemento);
+		}
+		                                                  //A quedó vacío, si quedan en b, forman parte de la dif sim, los agrego a todos
+		while(!conjBCopia.conjuntoVacio()) {
+			elemento=conjBCopia.elegir();
+			difSim.agregar(elemento);
+			conjBCopia.sacar(elemento);
+		}
+		return difSim;
+		
+	}
+
+	public static DiccMultipleTDA obtenerSinonimos(DiccSimpleTDA diccS) {
+		DiccMultipleTDA diccM=new DiccMultiple();
+		diccM.inicializarDiccionario();
+		
+		ConjuntoTDA palabras=new Conjunto();
+		palabras.inicializarConjunto();
+		
+		ConjuntoTDA significados=new Conjunto();
+		significados.inicializarConjunto();
+		
+		palabras=diccS.claves();
+		int palabra;
+		while(!palabras.conjuntoVacio()) {
+			palabra=palabras.elegir();
+			diccM.agregar(diccS.recuperar(palabra), palabra);
+			palabras.sacar(palabra);
+			}
+		return diccM;
+		}
+
+	public static void mostrarDiccSimple(DiccSimpleTDA diccS) {
+		ConjuntoTDA claves=new Conjunto();
+		claves.inicializarConjunto();
+		
+		System.out.println("Mostrando DiccSimple: ");
+		int clave;
+		claves=diccS.claves();
+		while(!claves.conjuntoVacio()) {
+			clave=claves.elegir();
+			System.out.println("Clave: "+clave+" Valor: "+diccS.recuperar(clave)+".");
+			claves.sacar(clave);
+		}
+	}
+
+	private static void copiarDiccSimple(DiccSimpleTDA diccS, DiccSimpleTDA diccSCopia) {
+		ConjuntoTDA claves=new Conjunto();
+		claves.inicializarConjunto();
+		
+		claves=diccS.claves();
+		int clave;
+		while(!claves.conjuntoVacio()) {
+			clave=claves.elegir();
+			diccSCopia.agregar(clave, diccSCopia.recuperar(clave));
+			claves.sacar(clave);
+		}
+	}
+	
+	//Métodos para mostrar Arboles Binarios
+	
+	//Pre-Order
+	public void preOrder(ABBTDA a) {
+		System.out.println(a.Raiz());
+		preOrder(a.HijoIzq());
+		preOrder(a.HijoDer());
+	}
+	
+	//In-Order
+	public void inOrder(ABBTDA a) {
+		preOrder(a.HijoIzq());
+		System.out.println(a.Raiz());
+		preOrder(a.HijoDer());
+	}
+		
+	//Post-Order
+	public void postOrder(ABBTDA a) {
+		preOrder(a.HijoIzq());
+		preOrder(a.HijoDer());
+		System.out.println(a.Raiz());
+	}
 }
+
 	

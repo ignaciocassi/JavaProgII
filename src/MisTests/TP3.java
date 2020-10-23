@@ -2,27 +2,193 @@ package MisTests;
 
 import MisApis.ColaTDA;
 import MisApis.ConjuntoTDA;
+import MisApis.DiccMultipleTDA;
+import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
 import MisImplementacionesDinamicas.Cola;
 import MisImplementacionesDinamicas.Conjunto;
+import MisImplementacionesDinamicas.DiccMultiple;
+import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesDinamicas.Pila;
 import MisMetodos.metodos;
 
 public class TP3 {
 
 	public static void main(String[] args) {
-		//Ejecutar1aPilaCapicua();
-		//EjecutarEliminarRepetidosPila();
-		//EjecutarPartirPilaEnDos();
-		//EjecutarObtenerRepetidosPila();
-		//EjecutarSacarRepetidosCola();
-		//EjecutarPartirColaEndos();
-		//EjecutarObtenerRepetidosCola();
-		//EjecutarObtenerDifSimetricaEntreConj();
-		//EjecutarConjuntosIguales();
-		//EjecutarCantElemConjunto();
-		//EjecutarObtenerConjElementosComunesEntrePilayCola();
-		EjecutarElementosIgualesPilayCola();
+		//Ejecutar1aPilaCapicua();                              //E1A
+		//EjecutarEliminarRepetidosPila();                      //E1B
+		//EjecutarPartirPilaEnDos();                            //E1C
+		//EjecutarObtenerRepetidosPila();                       //E1D
+		//EjecutarSacarRepetidosCola();                         //E2A
+		//EjecutarPartirColaEndos();                            //E2B
+		//EjecutarObtenerRepetidosCola();                       //E2C
+		//EjecutarObtenerDifSimetricaEntreConj();               //E3A(C)
+		//EjecutarObtenerDifSimetricaEntreConjSinUID();
+		//EjecutarConjuntosIguales();                           //E3D
+		//EjecutarCantElemConjunto();                           //E3E
+		//EjecutarObtenerConjElementosComunesEntrePilayCola();  //E3F
+		//EjecutarElementosIgualesPilayCola();                  //E3G
+		//Ejercicio 4A en MisTests.E4AprioridadesDeValores
+		//EjecutarObtenerDiccMultipleD1yD2();                   //E5A
+		//EjecutarObtenerConjClavesComunesEntreDM();            //E5C
+		EjecutarObtenerSinonimos();
+	}
+
+	private static void EjecutarObtenerSinonimos() {
+		DiccSimpleTDA diccS=new DiccSimple();
+		diccS.inicializarDiccionario();
+		
+		DiccMultipleTDA diccM=new DiccMultiple();
+		diccM.inicializarDiccionario();
+		
+		diccS.agregar(1, 1);
+		diccS.agregar(2, 1);
+		diccS.agregar(3, 4);
+		diccS.agregar(4, 4);
+		diccS.agregar(5, 6);
+		diccS.agregar(7, 8);
+		diccS.agregar(9, 4);
+		
+		metodos.mostrarDiccSimple(diccS);
+		diccM=metodos.obtenerSinonimos(diccS);
+		metodos.mostrarDiccMultiple(diccM);
+	}
+
+	private static void EjecutarObtenerDifSimetricaEntreConjSinUID() {
+		ConjuntoTDA conjA=new Conjunto();
+		conjA.inicializarConjunto();
+		
+		ConjuntoTDA conjB=new Conjunto();
+		conjB.inicializarConjunto();
+		
+		ConjuntoTDA difSim=new Conjunto();
+		difSim.inicializarConjunto();
+		
+		conjA.agregar(1);
+		conjA.agregar(2);
+		conjA.agregar(3);
+		
+		conjA.agregar(3);
+		conjA.agregar(4);
+		conjA.agregar(5);
+		
+		metodos.obtenerDifSimetricaEntreConjSinUID(conjA, conjB);
+		
+	}
+
+	private static void EjecutarObtenerClavesComunesySusValDiccMultipleD1yD2() {
+		ConjuntoTDA clavesComunes=new Conjunto();
+		clavesComunes.inicializarConjunto();
+		
+		DiccMultipleTDA D1=new DiccMultiple();
+		D1.inicializarDiccionario();
+		
+		DiccMultipleTDA D2=new DiccMultiple();
+		D2.inicializarDiccionario();
+		
+		DiccMultipleTDA diccSuma=new DiccMultiple();
+		diccSuma.inicializarDiccionario();
+		
+		D1.agregar(1, 1);
+		D1.agregar(1, 2);
+		D1.agregar(1, 3);
+		D1.agregar(2, 4);
+		D1.agregar(2, 5);
+		D1.agregar(2, 6);
+		
+		D2.agregar(1, 3);
+		D2.agregar(1, 4);
+		D2.agregar(1, 5);
+		D2.agregar(2, 6);
+		D2.agregar(2, 7);
+		D2.agregar(2, 8);
+		
+		
+		clavesComunes=metodos.obtenerConjClavesComunesEntreDM(D1, D2);
+		diccSuma=metodos.obtenerDiccSumaClavesComunesD1D2(D1,D2,clavesComunes);
+		metodos.mostrarDiccMultiple(diccSuma);
+		
+		
+	}
+
+	private static void EjecutarObtenerDiccMultipleD1yD2() {
+		DiccMultipleTDA D1=new DiccMultiple();
+		DiccMultipleTDA D2=new DiccMultiple();
+		DiccMultipleTDA diccSuma=new DiccMultiple();
+		D1.inicializarDiccionario();
+		D2.inicializarDiccionario();
+		diccSuma.inicializarDiccionario();
+		
+		D1.agregar(1, 1);
+		D1.agregar(1, 2);
+		D1.agregar(2, 1);
+		D1.agregar(2, 2);
+		D1.agregar(3, 1);
+		D1.agregar(3, 2);
+		D1.agregar(4, 1);
+		D1.agregar(4, 2);
+		
+		D2.agregar(1, 3);
+		D2.agregar(1, 4);
+		D2.agregar(2, 3);
+		D2.agregar(2, 4);
+		D2.agregar(3, 3);
+		D2.agregar(3, 4);
+		D2.agregar(5, 3);
+		D2.agregar(5, 4);
+		
+		System.out.println("Dicc D1: ");
+		metodos.mostrarDiccMultiple(D1);
+		
+		System.out.println("Dicc D2: ");
+		metodos.mostrarDiccMultiple(D2);
+		
+		diccSuma=metodos.obtenerDiccSumaD1D2(D1,D2);
+		System.out.println("Dicc diccSuma D1 y D2 con todos las claves y valores de ambos: ");
+		metodos.mostrarDiccMultiple(diccSuma);
+		
+		
+		
+	}
+
+	private static void EjecutarObtenerConjClavesComunesEntreDM() {
+		//E5C
+		DiccMultipleTDA D1=new DiccMultiple();
+		D1.inicializarDiccionario();
+		
+		DiccMultipleTDA D2=new DiccMultiple();
+		D2.inicializarDiccionario();
+		
+		DiccMultipleTDA ClavesyValoresComunes=new DiccMultiple();
+		ClavesyValoresComunes.inicializarDiccionario();
+		
+		ConjuntoTDA clavesComunes=new Conjunto();
+		clavesComunes.inicializarConjunto();
+		
+		D1.agregar(1, 1);
+		D1.agregar(1, 2);
+		D1.agregar(2, 1);
+		D1.agregar(2, 2);
+		D1.agregar(3, 1);
+		D1.agregar(3, 2);
+		D1.agregar(4, 1);
+		D1.agregar(4, 2);
+		
+		D2.agregar(1, 3);
+		D2.agregar(1, 4);
+		D2.agregar(2, 3);
+		D2.agregar(2, 4);
+		D2.agregar(3, 3);
+		D2.agregar(3, 4);
+		D2.agregar(5, 3);
+		D2.agregar(5, 4);
+		
+		clavesComunes=metodos.obtenerConjClavesComunesEntreDM(D1,D2);
+		System.out.println("Claves comunes: ");
+		metodos.mostrarConjunto(clavesComunes);
+		
+		ClavesyValoresComunes=metodos.obtenerClavesyValoresComunes(D1,D2,clavesComunes);
+		metodos.mostrarDiccMultiple(ClavesyValoresComunes);
 	}
 
 	private static void EjecutarElementosIgualesPilayCola() {
@@ -278,7 +444,7 @@ public class TP3 {
 		P.Apilar(1);
 		P.Apilar(2);
 		P.Apilar(3);
-		P.Apilar(4);
+		P.Apilar(2);
 		P.Apilar(1);
 		
 		boolean capicua=metodos.pilaCapicua(P);

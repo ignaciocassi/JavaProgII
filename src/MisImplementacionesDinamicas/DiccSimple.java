@@ -22,6 +22,7 @@ public class DiccSimple implements DiccSimpleTDA {
 		if (nodoActual==null) {                                  //si no lo encontró, lo crea
 			nodoActual=new NodoClave();
 			nodoActual.clave=clave;
+			nodoActual.sigNodo=origen;
 			origen=nodoActual;                                     //Origen pasa a ser el nuevoNodo
 		}
 		nodoActual.valor=valor;                                   //Si existe la clave en un nodo, reemplaza su valor por el nuevo

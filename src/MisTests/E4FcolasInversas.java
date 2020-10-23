@@ -14,7 +14,7 @@ public class E4FcolasInversas {
 		cola1.Acolar(1);
 		cola1.Acolar(2);
 		cola1.Acolar(3);
-		cola2.Acolar(4);
+		cola2.Acolar(3);
 		cola2.Acolar(2);
 		cola2.Acolar(1);
 		System.out.print(metodos.colasInversas(cola1, cola2));

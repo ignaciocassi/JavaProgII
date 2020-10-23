@@ -11,10 +11,12 @@ public class E6AinterseccionConjuntos {
 		ConjuntoTDA conjB=new Conjunto();
 		conjA.inicializarConjunto();
 		conjB.inicializarConjunto();
+		
 		conjA.agregar(1);
 		conjA.agregar(2);
 		conjA.agregar(3);
 		conjA.agregar(4);
+		
 		conjB.agregar(4);
 		conjB.agregar(5);
 		conjB.agregar(6);

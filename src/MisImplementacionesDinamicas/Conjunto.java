@@ -50,7 +50,11 @@ public class Conjunto implements ConjuntoTDA {
 	}
 
 	public boolean pertenece(int valor) {
-		return false;
+		Nodo aux=c;
+		while((aux!=null) && (aux.valor!=valor)) {
+			aux=aux.sigNodo;
+		}
+		return (aux!=null);
 	}
 
 }

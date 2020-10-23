@@ -1,25 +1,24 @@
 package MisTests;
 
 import MisApis.ColaTDA;
-import MisImplementacionesEstaticas.ColaPI;
+import MisImplementacionesDinamicas.Cola;
 import MisMetodos.metodos;
 
-public class E4BinvertirColaConAux {
+public class E4BInvertirColaRecursividad {
 
 	public static void main(String[] args) {
-		System.out.println("Invierte una colaOrigen pasandola a una pilaAux y luego vuelve a pasarla a la colaOrigen");
-		
-		ColaTDA cola=new ColaPI();
+		ColaTDA cola=new Cola();
 		cola.InicializarCola();
 		
-		metodos.llenarCola(cola);
+		cola.Acolar(1);
+		cola.Acolar(2);
+		cola.Acolar(3);
 		
 		System.out.println("Cola original: ");
 		metodos.mostrarcola(cola);
 		
 		System.out.println("Cola invertida: ");
-		metodos.invertirColaConAux(cola);
-		
+		metodos.invertirColaRecursividad(cola);
 		metodos.mostrarcola(cola);
 	}
 
