@@ -1,16 +1,21 @@
 package MisTests;
 
+import MisApis.ABBTDA;
+
 import MisApis.ColaTDA;
 import MisApis.ConjuntoTDA;
 import MisApis.DiccMultipleTDA;
 import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
+import MisImplementacionesDinamicas.ABB;
 import MisImplementacionesDinamicas.Cola;
 import MisImplementacionesDinamicas.Conjunto;
 import MisImplementacionesDinamicas.DiccMultiple;
 import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesDinamicas.Pila;
 import MisMetodos.metodos;
+import MisMetodos.metodosABBconInstancia;
+
 
 public class TP3 {
 
@@ -31,10 +36,31 @@ public class TP3 {
 		//Ejercicio 4A en MisTests.E4AprioridadesDeValores
 		//EjecutarObtenerDiccMultipleD1yD2();                   //E5A
 		//EjecutarObtenerConjClavesComunesEntreDM();            //E5C
-		EjecutarObtenerSinonimos();
+		//EjecutarObtenerSinonimos();                           //E5.2
 	}
 
-	private static void EjecutarObtenerSinonimos() {
+	public static void EjecutarCalcularProfundidadElemABB() {
+		ABBTDA abb=new ABB();
+		abb.InicializarArbol();
+		
+		abb.AgregarElem(100);
+		abb.AgregarElem(200);
+		abb.AgregarElem(50);
+		abb.AgregarElem(150);
+		abb.AgregarElem(250);
+		abb.AgregarElem(25);
+		abb.AgregarElem(75);
+		
+		int elemento=100;
+		metodosABBconInstancia metABB=new metodosABBconInstancia();
+		int profundidad=metABB.calcularProfundidadElemABB(abb, elemento);
+		System.out.println("La profundidad del elemento en el árbol es: "+profundidad);
+		
+	}
+
+	
+
+	public static void EjecutarObtenerSinonimos() {
 		DiccSimpleTDA diccS=new DiccSimple();
 		diccS.inicializarDiccionario();
 		
@@ -54,7 +80,7 @@ public class TP3 {
 		metodos.mostrarDiccMultiple(diccM);
 	}
 
-	private static void EjecutarObtenerDifSimetricaEntreConjSinUID() {
+	public static void EjecutarObtenerDifSimetricaEntreConjSinUID() {
 		ConjuntoTDA conjA=new Conjunto();
 		conjA.inicializarConjunto();
 		
@@ -76,7 +102,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerClavesComunesySusValDiccMultipleD1yD2() {
+	public static void EjecutarObtenerClavesComunesySusValDiccMultipleD1yD2() {
 		ConjuntoTDA clavesComunes=new Conjunto();
 		clavesComunes.inicializarConjunto();
 		
@@ -111,7 +137,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerDiccMultipleD1yD2() {
+	public static void EjecutarObtenerDiccMultipleD1yD2() {
 		DiccMultipleTDA D1=new DiccMultiple();
 		DiccMultipleTDA D2=new DiccMultiple();
 		DiccMultipleTDA diccSuma=new DiccMultiple();
@@ -151,7 +177,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerConjClavesComunesEntreDM() {
+	public static void EjecutarObtenerConjClavesComunesEntreDM() {
 		//E5C
 		DiccMultipleTDA D1=new DiccMultiple();
 		D1.inicializarDiccionario();
@@ -191,7 +217,7 @@ public class TP3 {
 		metodos.mostrarDiccMultiple(ClavesyValoresComunes);
 	}
 
-	private static void EjecutarElementosIgualesPilayCola() {
+	public static void EjecutarElementosIgualesPilayCola() {
 		PilaTDA p=new Pila();
 		p.InicializarPila();
 		
@@ -238,7 +264,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerConjElementosComunesEntrePilayCola() {
+	public static void EjecutarObtenerConjElementosComunesEntrePilayCola() {
 		PilaTDA p=new Pila();
 		p.InicializarPila();
 		
@@ -272,7 +298,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarCantElemConjunto() {
+	public static void EjecutarCantElemConjunto() {
 		ConjuntoTDA C=new Conjunto();
 		C.inicializarConjunto();
 		
@@ -288,7 +314,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarConjuntosIguales() {
+	public static void EjecutarConjuntosIguales() {
 		ConjuntoTDA conjA=new Conjunto();
 		conjA.inicializarConjunto();
 		
@@ -307,7 +333,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerDifSimetricaEntreConj() {
+	public static void EjecutarObtenerDifSimetricaEntreConj() {
 		ConjuntoTDA conjA=new Conjunto();
 		conjA.inicializarConjunto();
 		
@@ -332,7 +358,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerRepetidosCola() {
+	public static void EjecutarObtenerRepetidosCola() {
 		ColaTDA c=new Cola();
 		c.InicializarCola();
 		
@@ -352,7 +378,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarPartirColaEndos() {
+	public static void EjecutarPartirColaEndos() {
 		ColaTDA c=new Cola();
 		c.InicializarCola();
 		ColaTDA M1=new Cola();
@@ -374,7 +400,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarSacarRepetidosCola() {
+	public static void EjecutarSacarRepetidosCola() {
 		ColaTDA C=new Cola();
 		C.InicializarCola();
 		
@@ -392,7 +418,7 @@ public class TP3 {
 		
 	}
 
-	private static void EjecutarObtenerRepetidosPila() {
+	public static void EjecutarObtenerRepetidosPila() {
 		PilaTDA P=new Pila();
 		P.InicializarPila();
 		
@@ -410,7 +436,7 @@ public class TP3 {
 		metodos.mostrarConjunto(repetidos);
 	}
 
-	private static void EjecutarPartirPilaEnDos() {
+	public static void EjecutarPartirPilaEnDos() {
 		PilaTDA P=new Pila();
 		PilaTDA M1=new Pila();
 		PilaTDA M2=new Pila();
@@ -437,7 +463,7 @@ public class TP3 {
 		metodos.mostrarPila(M2);
 	}
 
-	private static void Ejecutar1aPilaCapicua() {
+	public static void Ejecutar1aPilaCapicua() {
 		PilaTDA P = new Pila();
 		P.InicializarPila();
 		
@@ -457,7 +483,7 @@ public class TP3 {
 		
 	}
 	
-	private static void EjecutarEliminarRepetidosPila() {
+	public static void EjecutarEliminarRepetidosPila() {
 		PilaTDA P=new Pila();
 		P.InicializarPila();
 		

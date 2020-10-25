@@ -9,7 +9,6 @@ import MisApis.DiccSimpleTDA;
 import MisApis.PilaTDA;
 import MisImplementacionesDinamicas.Cola;
 import MisImplementacionesDinamicas.DiccMultiple;
-import MisImplementacionesDinamicas.DiccSimple;
 import MisImplementacionesEstaticas.ColaPI;
 import MisImplementacionesEstaticas.ColaPrioridad;
 import MisImplementacionesEstaticas.Conjunto;
@@ -1156,7 +1155,7 @@ public class metodos {
 		}
 	}
 
-	private static void copiarDiccSimple(DiccSimpleTDA diccS, DiccSimpleTDA diccSCopia) {
+	public static void copiarDiccSimple(DiccSimpleTDA diccS, DiccSimpleTDA diccSCopia) {
 		ConjuntoTDA claves=new Conjunto();
 		claves.inicializarConjunto();
 		
@@ -1172,25 +1171,27 @@ public class metodos {
 	//Métodos para mostrar Arboles Binarios
 	
 	//Pre-Order
-	public void preOrder(ABBTDA a) {
+	public static void preOrder(ABBTDA a) {
 		System.out.println(a.Raiz());
 		preOrder(a.HijoIzq());
 		preOrder(a.HijoDer());
 	}
 	
 	//In-Order
-	public void inOrder(ABBTDA a) {
+	public static void inOrder(ABBTDA a) {
 		preOrder(a.HijoIzq());
 		System.out.println(a.Raiz());
 		preOrder(a.HijoDer());
 	}
 		
 	//Post-Order
-	public void postOrder(ABBTDA a) {
+	public static void postOrder(ABBTDA a) {
 		preOrder(a.HijoIzq());
 		preOrder(a.HijoDer());
 		System.out.println(a.Raiz());
 	}
+	
 }
+
 
 	
