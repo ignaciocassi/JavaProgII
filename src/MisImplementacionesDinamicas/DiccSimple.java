@@ -3,6 +3,16 @@ package MisImplementacionesDinamicas;
 import MisApis.ConjuntoTDA;
 import MisApis.DiccSimpleTDA;
 
+/** Costos DiccSimpleL:
+ * InicializarDiccionario(): Constante
+ * Agregar(): Lineal
+ * Eliminar(): Lineal
+ * Recuperar(): Lineal
+ * Claves(): Lineal
+ * @author Nacho
+ *
+ */
+
 public class DiccSimple implements DiccSimpleTDA {
 	
 	NodoClave origen;

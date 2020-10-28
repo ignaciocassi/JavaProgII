@@ -27,8 +27,8 @@ public class TP3 {
 		//EjecutarSacarRepetidosCola();                         //E2A
 		//EjecutarPartirColaEndos();                            //E2B
 		//EjecutarObtenerRepetidosCola();                       //E2C
-		//EjecutarObtenerDifSimetricaEntreConj();               //E3A(C)
-		//EjecutarObtenerDifSimetricaEntreConjSinUID();
+		//EjecutarObtenerDifSimetricaEntreConjSinUID();         //E3(B)
+		//EjecutarObtenerDifSimetricaEntreConj();               //E3(C)
 		//EjecutarConjuntosIguales();                           //E3D
 		//EjecutarCantElemConjunto();                           //E3E
 		//EjecutarObtenerConjElementosComunesEntrePilayCola();  //E3F
@@ -94,11 +94,12 @@ public class TP3 {
 		conjA.agregar(2);
 		conjA.agregar(3);
 		
-		conjA.agregar(3);
-		conjA.agregar(4);
-		conjA.agregar(5);
+		conjB.agregar(3);
+		conjB.agregar(4);
+		conjB.agregar(5);
 		
-		metodos.obtenerDifSimetricaEntreConjSinUID(conjA, conjB);
+		difSim=metodos.obtenerDifSimetricaEntreConjSinUID(conjA, conjB);
+		metodos.mostrarConjunto(difSim);
 		
 	}
 
@@ -334,6 +335,7 @@ public class TP3 {
 	}
 
 	public static void EjecutarObtenerDifSimetricaEntreConj() {
+		// AuB - AiB
 		ConjuntoTDA conjA=new Conjunto();
 		conjA.inicializarConjunto();
 		
@@ -346,13 +348,12 @@ public class TP3 {
 		conjA.agregar(1);
 		conjA.agregar(2);
 		conjA.agregar(3);
-		conjA.agregar(4);
 		
+		conjB.agregar(3);
 		conjB.agregar(4);
 		conjB.agregar(5);
-		conjB.agregar(6);
 		
-		difSimetrica=metodos.obtenerDifSimetricaEntreConj(conjA,conjB);
+		difSimetrica=metodos.diferenciaConjuntos(metodos.unionConjuntos(conjA, conjB), metodos.interseccionConjuntos(conjA, conjB));
 		metodos.mostrarConjunto(difSimetrica);
 		
 		

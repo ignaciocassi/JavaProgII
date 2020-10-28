@@ -2,6 +2,14 @@ package MisImplementacionesEstaticas;
 
 import MisApis.ColaPrioridadTDA;
 
+/**Costos ColaPrioridadAO:
+ * InicializarCola(): Constante
+ * AcolarPrioridad(): Lineal (2*n)
+ * Desacolar(): Constante
+ * ColaVacia(): Constante
+ * Primero(): Constante
+ */
+
 public class ColaPrioridadAO implements ColaPrioridadTDA {
 	
 	class Elemento{

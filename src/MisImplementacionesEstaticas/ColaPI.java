@@ -2,6 +2,14 @@ package MisImplementacionesEstaticas;
 
 import MisApis.ColaTDA;
 
+/**Costos ColaPI:
+ * InicializarCola(): Constante
+ * Acolar(): Constante
+ * Desacolar(): Lineal
+ * ColaVacia(): Constante
+ * Primero(): Constante
+ */
+
 public class ColaPI implements ColaTDA {
 	
 	int [] arreglo;

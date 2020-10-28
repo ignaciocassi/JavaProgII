@@ -2,6 +2,16 @@ package MisImplementacionesEstaticas;
 
 import MisApis.ConjuntoTDA;
 
+/** Costos Conjunto:
+ * InicializarConjunto(): Constante
+ * Agregar(): Lineal
+ * Sacar(): Lineal
+ * Pertenece(): Lineal
+ * Elegir(): Constante
+ * @author Nacho
+ *
+ */
+
 public class Conjunto implements ConjuntoTDA {
 	
 	int[] arreglo;

@@ -2,6 +2,17 @@ package MisImplementacionesDinamicas;
 
 import MisApis.ColaPrioridadTDA;
 
+/**Costos ColaPrioridadLD:
+ * InicializarCola(): Constante
+ * Acolar(): Lineal (n)
+ * Desacolar(): Constante
+ * Primero(): Constante
+ * ColaVacia(): Constante
+ * Prioridad(): Constante
+ * @author Nacho
+ *
+ */
+
 public class ColaPrioridad implements ColaPrioridadTDA {
 	
 	NodoPrioridad mayorPrioridad;

@@ -5,10 +5,14 @@ package MisImplementacionesEstaticas;
 
 import MisApis.PilaTDA;
 
-/**
- * @author Nacho
- *
+/**Costos PilaPU:
+ * InicializarPila(): Constante
+ * Apilar(): Constante
+ * Desapilar(): Constante
+ * PilaVacia(): Constante
+ * Tope(): Constante
  */
+
 public class Pila implements PilaTDA {
 	
 	int [] arreglo;

@@ -1,7 +1,7 @@
 package MisApis;
 
 public interface ConjuntoTDA {
-	void inicializarConjunto();    //Precond: 
+	void inicializarConjunto();
 	boolean conjuntoVacio();       //Precond: El conjunto debe estar inicializado
 	void agregar(int valor);       //Precond: El conjunto debe estar inicializado
 	int elegir();                  //Precond: El conjunto debe estar inicializado  y no esté vacío

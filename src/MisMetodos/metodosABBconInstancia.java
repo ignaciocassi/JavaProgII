@@ -106,17 +106,17 @@ public class metodosABBconInstancia {
 	//In-Order
 	public static void inOrder(ABBTDA a) {
 		if (!a.ArbolVacio()) {
-			preOrder(a.HijoIzq());
+			inOrder(a.HijoIzq());
 			System.out.println(a.Raiz());
-			preOrder(a.HijoDer());
+			inOrder(a.HijoDer());
 		}
 	}
 			
 	//Post-Order
 	public static void postOrder(ABBTDA a) {
 		if (!a.ArbolVacio()) {
-			preOrder(a.HijoIzq());
-			preOrder(a.HijoDer());
+			postOrder(a.HijoIzq());
+			postOrder(a.HijoDer());
 			System.out.println(a.Raiz());
 		}
 	}

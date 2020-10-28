@@ -2,6 +2,16 @@ package MisImplementacionesDinamicas;
 
 import MisApis.ColaTDA;
 
+/** Costos ColaLD:
+ * InicializarCola(): Constante
+ * Acolar(): Constante
+ * Desacolar(): Constante
+ * Primero(): Constante
+ * ColaVacia(): Constante
+ * @author Nacho
+ *
+ */
+
 public class Cola implements ColaTDA {
 	
 	Nodo primero;

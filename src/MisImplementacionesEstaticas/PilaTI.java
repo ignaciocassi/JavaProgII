@@ -2,6 +2,14 @@ package MisImplementacionesEstaticas;
 
 import MisApis.PilaTDA;
 
+/**Costos PilaPI:
+ * InicializarPila(): Constante
+ * Apilar(): Lineal
+ * Desapilar(): Lineal
+ * PilaVacia(): Constante
+ * Tope(): Constante
+ */
+
 public class PilaTI implements PilaTDA {
 
 	int[] arreglo;

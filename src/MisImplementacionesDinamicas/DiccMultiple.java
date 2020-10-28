@@ -3,6 +3,17 @@ package MisImplementacionesDinamicas;
 import MisApis.ConjuntoTDA;
 import MisApis.DiccMultipleTDA;
 
+/** Costos DiccMultipleL:
+ * InicializarDiccionario(): Constante
+ * Agregar(): Lineal
+ * Eliminar(): Lineal
+ * EliminarValor(): Lineal
+ * Recuperar(): Lineal
+ * Claves(): Lineal
+ * @author Nacho
+ *
+ */
+
 public class DiccMultiple implements DiccMultipleTDA {
 	
 	NodoClave origen;                      //Apunta al primer NodoClave

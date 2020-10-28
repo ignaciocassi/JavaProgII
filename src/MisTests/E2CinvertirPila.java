@@ -21,7 +21,7 @@ public class E2CinvertirPila {
 		metodos.mostrarPila(pila);
 		
 		System.out.println("Pila invertida: ");
-		pilaInvertida=metodos.invertirPila(pila);
+		pila=metodos.invertirPila(pila);
 		metodos.mostrarPila(pilaInvertida);
 
 	}

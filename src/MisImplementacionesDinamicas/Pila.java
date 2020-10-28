@@ -2,6 +2,16 @@ package MisImplementacionesDinamicas;
 
 import MisApis.PilaTDA;
 
+/** Costos PilaLD:
+ * InicializarPila(): Constante
+ * Apilar(): Constante
+ * Desapilar(): Constante
+ * Tope(): Constante
+ * PilaVacia(): Constante
+ * @author Nacho
+ *
+ */
+
 public class Pila implements PilaTDA {
 	
 	Nodo primero;

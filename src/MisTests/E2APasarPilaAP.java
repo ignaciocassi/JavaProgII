@@ -16,8 +16,11 @@ public class E2APasarPilaAP {
 		pilaA.Apilar(1);
 		pilaA.Apilar(2);
 		pilaA.Apilar(3);
+		
+		System.out.println("Pila A: ");
 		metodos.mostrarPila(pilaA);
-		pilaB=metodos.pasarPilaPila(pilaA);
+		metodos.pasarPilaPila(pilaA,pilaB);
+		System.out.println("Pila B: ");
 		metodos.mostrarPila(pilaB);
 		}
 	}

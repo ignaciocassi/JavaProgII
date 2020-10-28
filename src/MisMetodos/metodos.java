@@ -38,16 +38,11 @@ public class metodos {
 	}
 	
 	//2a. Pasa de una pila Original a una pila Copia, dejando la primera vacía y la segunda en orden inverso
-	public static PilaTDA pasarPilaPila(PilaTDA pilaOriginal) {
-		PilaTDA pilaCopia = new Pila();
-		pilaCopia.InicializarPila();
-		int ultimo;
+	public static void pasarPilaPila(PilaTDA pilaOriginal, PilaTDA pilaDestino) {
 		while (!pilaOriginal.PilaVacia()) {
-			ultimo=pilaOriginal.Tope();
-			pilaCopia.Apilar(ultimo);
+			pilaDestino.Apilar(pilaOriginal.Tope());
 			pilaOriginal.Desapilar();
 		}
-		return pilaCopia;
 	}
 	
 	//2b. Copia una pila Original a una pila Copia, no destructivo, en el mismo orden que la original
@@ -103,13 +98,11 @@ public class metodos {
 	//2e. Devuelve la suma de los elementos de una pila
 	public static int sumarElemPila(PilaTDA pila) {
 		int suma=0;
-		int tope;
 		PilaTDA pilaCopia=new Pila();
 		pilaCopia.InicializarPila();
 		copiarPila(pila,pilaCopia);
 		while(!pilaCopia.PilaVacia()) {
-			tope=pilaCopia.Tope();
-			suma=suma+tope;
+			suma=suma+pilaCopia.Tope();
 			pilaCopia.Desapilar();
 		}
 		return suma;
@@ -128,11 +121,10 @@ public class metodos {
 	
 	//4a. Pasa de una cola a otra, es destructivo
 	public static void pasarColaCola(ColaTDA colaOrigen, ColaTDA colaDestino) {
-		int primero;
 		while(!colaOrigen.ColaVacia()) {
-			primero=colaOrigen.Primero();
-			colaDestino.Acolar(primero);
-		};
+			colaDestino.Acolar(colaOrigen.Primero());
+			colaOrigen.Desacolar();
+		}
 	}
 	 //4c. Invierte una colaOrigen mediante recursividad
 	public static void invertirColaRecursividad(ColaTDA colaOrigen) {
@@ -455,11 +447,14 @@ public class metodos {
 	
 	public static ConjuntoTDA unionConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
 		ConjuntoTDA conjUnion=new Conjunto();
-		ConjuntoTDA conjACopia=new Conjunto();
-		ConjuntoTDA conjBCopia=new Conjunto();
-		conjACopia.inicializarConjunto();
-		conjBCopia.inicializarConjunto();
 		conjUnion.inicializarConjunto();
+		
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
 		copiarConjunto(conjA,conjACopia);
 		copiarConjunto(conjB,conjBCopia);
 		
@@ -480,13 +475,15 @@ public class metodos {
 	public static ConjuntoTDA interseccionConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
 		ConjuntoTDA conjInterseccion=new Conjunto();
 		conjInterseccion.inicializarConjunto();
+		
 		ConjuntoTDA conjACopia=new Conjunto();
 		conjACopia.inicializarConjunto();
+		
 		ConjuntoTDA conjBCopia=new Conjunto();
 		conjBCopia.inicializarConjunto();
 		
-		metodos.copiarConjunto(conjA,conjACopia);
-		metodos.copiarConjunto(conjB,conjBCopia);
+		copiarConjunto(conjA,conjACopia);
+		copiarConjunto(conjB,conjBCopia);
 		
 		int valorA;
 		int valorB;
@@ -508,24 +505,38 @@ public class metodos {
 	
 	public static ConjuntoTDA diferenciaConjuntos(ConjuntoTDA conjA, ConjuntoTDA conjB) {
 		ConjuntoTDA conjDiferencia=new Conjunto();
-		ConjuntoTDA conjUnion=new Conjunto();
-		ConjuntoTDA conjInterseccion=new Conjunto();
 		conjDiferencia.inicializarConjunto();
-		conjUnion.inicializarConjunto();
-		conjInterseccion.inicializarConjunto();
 		
-		conjUnion=unionConjuntos(conjA,conjB);
-		conjInterseccion=interseccionConjuntos(conjA,conjB);
-		int valorU;
-		while(!conjUnion.conjuntoVacio()) {
-			valorU=conjUnion.elegir();
-			if (!conjInterseccion.pertenece(valorU)) {
-				conjDiferencia.agregar(valorU);
+		ConjuntoTDA conjACopia=new Conjunto();
+		conjACopia.inicializarConjunto();
+		
+		ConjuntoTDA conjBCopia=new Conjunto();
+		conjBCopia.inicializarConjunto();
+		
+		copiarConjunto(conjA,conjACopia);
+		copiarConjunto(conjB,conjBCopia);
+		
+		int valorA;
+		int valorB;
+		while(!(conjACopia.conjuntoVacio() && conjBCopia.conjuntoVacio())) {
+			if(!conjACopia.conjuntoVacio()) {
+				valorA=conjACopia.elegir();
+				if(!conjBCopia.pertenece(valorA)) {
+					conjDiferencia.agregar(valorA);
+				}
+				conjACopia.sacar(valorA);
+				conjBCopia.sacar(valorA);
 			}
-			conjUnion.sacar(valorU);
+			if(!conjBCopia.conjuntoVacio()) {
+				valorB=conjBCopia.elegir();
+				if(!conjACopia.pertenece(valorB)) {
+					conjDiferencia.agregar(valorB);
+				}
+				conjBCopia.sacar(valorB);
+				conjACopia.sacar(valorB);
+			}
 		}
 		return conjDiferencia;
-		
 	}
 	
 	//TP3.1a 
@@ -705,63 +716,6 @@ public class metodos {
 			cCopia.Desacolar();
 		}
 		return conjRepetidos;
-	}
-
-	public static ConjuntoTDA obtenerDifSimetricaEntreConj(ConjuntoTDA conjA, ConjuntoTDA conjB) {
-		ConjuntoTDA conjACopia=new Conjunto();
-		conjACopia.inicializarConjunto();
-		
-		ConjuntoTDA conjBCopia=new Conjunto();
-		conjBCopia.inicializarConjunto();
-		
-		ConjuntoTDA conjUnion=new Conjunto();
-		conjUnion.inicializarConjunto();
-		
-		ConjuntoTDA conjInterseccion=new Conjunto();
-		conjInterseccion.inicializarConjunto();
-		
-		ConjuntoTDA conjDifSim=new Conjunto();
-		conjDifSim.inicializarConjunto();
-		
-		metodos.copiarConjunto(conjA, conjACopia);
-		metodos.copiarConjunto(conjB, conjBCopia);
-		
-		int elemento;
-		while(!conjACopia.conjuntoVacio()) {
-			elemento=conjACopia.elegir();
-			conjUnion.agregar(elemento);
-			conjACopia.sacar(elemento);
-		}
-		while(!conjBCopia.conjuntoVacio()) {
-			elemento=conjBCopia.elegir();
-			conjUnion.agregar(elemento);
-			conjBCopia.sacar(elemento);
-		}
-		
-		metodos.copiarConjunto(conjA, conjACopia);
-		metodos.copiarConjunto(conjB, conjBCopia);
-		
-		while(!conjACopia.conjuntoVacio() && !conjBCopia.conjuntoVacio()) {
-			elemento=conjACopia.elegir();
-			if(conjBCopia.pertenece(elemento)) {
-				conjInterseccion.agregar(elemento);
-			}
-			conjACopia.sacar(elemento);
-			elemento=conjBCopia.elegir();
-			if(conjACopia.pertenece(elemento)) {
-				conjInterseccion.agregar(elemento);
-			}
-			conjBCopia.sacar(elemento);
-		}
-		
-		while(!conjUnion.conjuntoVacio()) {
-			elemento=conjUnion.elegir();
-			if(!conjInterseccion.pertenece(elemento)) {
-				conjDifSim.agregar(elemento);
-			}
-			conjUnion.sacar(elemento);
-		}
-		return conjDifSim;
 	}
 
 	public static boolean conjuntosIguales(ConjuntoTDA conjA, ConjuntoTDA conjB) {
@@ -1087,8 +1041,6 @@ public class metodos {
 	}
 
 	public static ConjuntoTDA obtenerDifSimetricaEntreConjSinUID(ConjuntoTDA conjA, ConjuntoTDA conjB) {
-		//Todos los que no estan repetidos
-		
 		ConjuntoTDA difSim=new Conjunto();
 		difSim.inicializarConjunto();
 		
@@ -1102,24 +1054,25 @@ public class metodos {
 		copiarConjunto(conjB,conjBCopia);
 		
 		int elemento;
-		while(!conjACopia.conjuntoVacio()) {
-			elemento=conjACopia.elegir();                 //Tomo elemento de A
-			if(!conjBCopia.pertenece(elemento)) {         //Si no pertenece a B, lo agrego
+		while (!conjACopia.conjuntoVacio()){
+			elemento = conjACopia.elegir();
+			if (!conjBCopia.pertenece(elemento)){
 				difSim.agregar(elemento);
-			} else {                                      //Si pertenece a B, lo saco de ambos
+			} else {
 				conjBCopia.sacar(elemento);
 			}
 			conjACopia.sacar(elemento);
 		}
-		                                                  //A quedó vacío, si quedan en b, forman parte de la dif sim, los agrego a todos
-		while(!conjBCopia.conjuntoVacio()) {
-			elemento=conjBCopia.elegir();
+		while (!conjBCopia.conjuntoVacio()){
+			elemento = conjBCopia.elegir();
 			difSim.agregar(elemento);
 			conjBCopia.sacar(elemento);
 		}
 		return difSim;
-		
 	}
+		
+		
+
 
 	public static DiccMultipleTDA obtenerSinonimos(DiccSimpleTDA diccS) {
 		DiccMultipleTDA diccM=new DiccMultiple();

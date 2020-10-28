@@ -2,6 +2,16 @@ package MisImplementacionesDinamicas;
 
 import MisApis.ConjuntoTDA;
 
+/** Costos ConjuntoLD:
+ * InicializarConjunto(): Consante
+ * Agregar(): Lineal
+ * Sacar(): Lineal
+ * Pertenece(): Lineal
+ * Elegir(): Constante
+ * @author Nacho
+ *
+ */
+
 public class Conjunto implements ConjuntoTDA {
 	//Tamaño máximo no acotado
 	
